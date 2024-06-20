@@ -78,10 +78,8 @@ async function handleWeatherDataRequest(req, res) {
 async function handleIpDataRequest(req, res) {
   if (req.url.startsWith('/ip-weather-data')) {
     const ip = new URL(req.url, `http://${req.headers.host}`).searchParams.get('ip');
-    console.log(ip, 'this is where the ip address is supposed to be logged');
-    const tempIp = '1.115.255.255';
-    console.log(tempIp);
-    ipinfo.lookupIp(tempIp).then(async (response) => {
+    console.log(ip);
+    ipinfo.lookupIp(ip).then(async (response) => {
       const coords = response.loc;
       const [latitude, longitude] = coords.split(',');
       const openWeatherApiResponse = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=${openWeatherApiKey}`);
