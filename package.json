@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server for weather app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Van-Nice/weather.git"
+  },
+  "keywords": [
+    "weather"
+  ],
+  "author": "Wilson Van Nice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Van-Nice/weather/issues"
+  },
+  "homepage": "https://github.com/Van-Nice/weather#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ip-info-finder": "^3.0.3",
+    "node-ipinfo": "^3.5.1"
+  }
+}
