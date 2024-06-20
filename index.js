@@ -1,4 +1,3 @@
-const { error } = require('console');
 const http = require('http');
 const https = require('https');
 require('dotenv').config();
