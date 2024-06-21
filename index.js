@@ -1,5 +1,5 @@
-const http = require('http');
 const https = require('https');
+const fetch = require('node-fetch');
 require('dotenv').config();
 
 const { IPinfoWrapper } = require("node-ipinfo");
