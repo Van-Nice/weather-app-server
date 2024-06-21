@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const { IPinfoWrapper } = require("node-ipinfo");
 
-
 const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY;
 const openWeatherApiKey = process.env.OPEN_WEATHER_API_KEY;
 
@@ -91,10 +90,9 @@ async function handleIpDataRequest(req, res) {
 }
 
 const server = http.createServer((req, res) => {
-    // Set CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all domains
-    res.setHeader('Access-Control-Allow-Methods', 'GET'); // Allowed methods
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); // Allowed headers
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.url.startsWith('/search-locations')) {
         const userInput = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
