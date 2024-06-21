@@ -90,9 +90,11 @@ async function handleIpDataRequest(req, res) {
 }
 
 const server = http.createServer((req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    // Set for staging
+    res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-client-staging.netlify.app'); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if (req.url.startsWith('/search-locations')) {
         const userInput = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
