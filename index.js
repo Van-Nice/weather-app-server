@@ -98,20 +98,19 @@ async function handleWeatherDataRequest(req, res) {
   }
 }
 
-async function handleIpDataRequest(req, res) {
+async function handleIpDataRequest(req, res, ip) {
   if (req.url.startsWith('/ip-weather-data')) {
-    const ip = new URL(req.url, `http://${req.headers.host}`).searchParams.get('ip');
     if (!ip) {
       console.error('No IP address provided');
       res.writeHead(400, {'Content-Type': 'application/json'});
       res.end(JSON.stringify({ error: 'No IP address provided' }));
       return;
     }
-    console.log(ip);
     try {
-      const response = await ipinfo.lookupIp(ip);
+      const response = await fetch(`https://ipinfo.io/${ip}?token=${ipInfoApiKey}`);
       const coords = response.loc;
       const [latitude, longitude] = coords.split(',');
+      console.log(latitude, longitude);
       const openWeatherApiResponse = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=${openWeatherApiKey}`);
       const weatherData = await openWeatherApiResponse.json();
       res.writeHead(200, {'Content-Type': 'application/json'});
@@ -130,6 +129,8 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+    const ip = req.socket.remoteAddress;
 
     if (req.url.startsWith('/search-locations')) {
         const userInput = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
@@ -161,21 +162,9 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.url.startsWith('/ip-weather-data')){
-      handleIpDataRequest(req, res);
+      handleIpDataRequest(req, res, ip);
     }
 
-    // Create get ip function endpoint
-    if (req.url.startsWith('/get-ip')) {
-      try {
-        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        res.end(ip);
-      } catch (error) {
-        console.error('An error occurred while getting the IP:', error);
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('An error occurred while getting the IP');
-      }
-    }
 });
 
 const PORT = process.env.PORT || 3000;
