@@ -66,7 +66,7 @@ async function fetchWeatherData(address, res) {
 
 async function handleWeatherDataRequest(req, res) {
   if (req.url.startsWith('/start-weather-data')) {
-    const coords = new URL(req.url, `http://${req.headers.host}`).searchParams.get('coords');
+    const coords = new URL(req.url, `https://${req.headers.host}`).searchParams.get('coords');
     const [latitude, longitude] = coords.split(',');
     const weatherData = await fetchStartData(latitude, longitude);
     res.writeHead(200, {'Content-Type': 'application/json'});
@@ -76,7 +76,7 @@ async function handleWeatherDataRequest(req, res) {
 
 async function handleIpDataRequest(req, res) {
   if (req.url.startsWith('/ip-weather-data')) {
-    const ip = new URL(req.url, `http://${req.headers.host}`).searchParams.get('ip');
+    const ip = new URL(req.url, `https://${req.headers.host}`).searchParams.get('ip');
     console.log(ip);
     ipinfo.lookupIp(ip).then(async (response) => {
       const coords = response.loc;
@@ -89,15 +89,15 @@ async function handleIpDataRequest(req, res) {
   }
 }
 
-const server = http.createServer((req, res) => {
+const server = https.createServer((req, res) => {
     // Set for staging
-    res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-client-staging.netlify.app'); 
+    res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-client-staging.netlify.app/', 'https://weather-app-client-staging.netlify.app'); 
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
     if (req.url.startsWith('/search-locations')) {
-        const userInput = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
+        const userInput = new URL(req.url, `https://${req.headers.host}`).searchParams.get('input');
         const googleApiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(userInput)}&types=(cities)&key=${googleMapsApiKey}`;
 
         https.get(googleApiUrl, (apiRes) => {
@@ -117,7 +117,7 @@ const server = http.createServer((req, res) => {
     }
 
     if (req.url.startsWith('/weather-data')) {
-      const address = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
+      const address = new URL(req.url, `https://${req.headers.host}`).searchParams.get('input');
       fetchWeatherData(address, res);
     }
 
