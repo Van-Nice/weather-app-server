@@ -128,7 +128,7 @@ async function handleIpDataRequest(req, res, ip) {
 
 const server = http.createServer((req, res) => {
     // Set for staging
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-client-staging.netlify.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
