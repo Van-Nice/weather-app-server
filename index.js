@@ -108,8 +108,11 @@ async function handleIpDataRequest(req, res, ip) {
     }
     try {
       const response = await fetch(`https://ipinfo.io/${ip}?token=${ipInfoApiKey}`);
-      const coords = response.loc;
-      const [latitude, longitude] = coords.split(',');
+      const responseData = await response.json();
+      console.log(responseData);
+      const coords = responseData.loc;
+      console.log(coords);
+      const [latitude, longitude] = coords.split(",");
       console.log(latitude, longitude);
       const openWeatherApiResponse = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=minutely&appid=${openWeatherApiKey}`);
       const weatherData = await openWeatherApiResponse.json();
@@ -125,12 +128,13 @@ async function handleIpDataRequest(req, res, ip) {
 
 const server = http.createServer((req, res) => {
     // Set for staging
-    res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-client-staging.netlify.app');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-    const ip = req.socket.remoteAddress;
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    console.log(ip);
 
     if (req.url.startsWith('/search-locations')) {
         const userInput = new URL(req.url, `http://${req.headers.host}`).searchParams.get('input');
