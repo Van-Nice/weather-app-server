@@ -65,8 +65,4 @@ This will start the server on the port specified in your `.env` file or default 
 
 Contributions to improve the backend are welcome. Please fork the repository and submit a pull request with your changes.
 
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
 ---
