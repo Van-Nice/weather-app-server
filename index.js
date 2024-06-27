@@ -127,8 +127,8 @@ async function handleIpDataRequest(req, res, ip) {
 }
 
 const server = http.createServer((req, res) => {
-    // Set for staging
-    res.setHeader('Access-Control-Allow-Origin', 'https://wilsons-weather.com/');
+    // Set for production
+    res.setHeader('Access-Control-Allow-Origin', 'https://wilsons-weather.com');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
